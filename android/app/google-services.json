@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "834761316207",
+    "project_id": "uoc-e-counselor",
+    "storage_bucket": "uoc-e-counselor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834761316207:android:327cbfb4d378900a297a9a",
+        "android_client_info": {
+          "package_name": "com.company.uocCounselor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834761316207-de24hh0unl2jogue8cdim8auum85r96h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyJ710gwP6b5hSYqZD2BCKD89g2gNIWGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834761316207-de24hh0unl2jogue8cdim8auum85r96h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
