@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uoc_counselor/screens/studentAppoinments.dart';
 import 'package:uoc_counselor/screens/studentMessageOne.dart';
-import 'package:uoc_counselor/screens/studentnotifications.dart';
 import 'package:uoc_counselor/screens/profileStudent.dart';
 import 'package:uoc_counselor/screens/searchcounselor.dart';
 import 'package:uoc_counselor/screens/studentHome.dart';
@@ -36,7 +36,7 @@ class _StudentMessagesState extends State<StudentMessages> {
   final List<Widget> _children = [
     StudentHome(),
     StudentMessages(),
-    StudentNotifications(),
+    CounselorAppointment(),
     ProfileStudent(),
   ];
 
@@ -101,8 +101,8 @@ class _StudentMessagesState extends State<StudentMessages> {
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.deepPurple,
-            icon: Icon(Icons.notifications_active),
-            label: 'Notification',
+            icon: Icon(Icons.bookmark_add),
+            label: 'Appointments',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.deepPurple,
@@ -123,7 +123,7 @@ class _StudentMessagesState extends State<StudentMessages> {
         );
       } else if (index == 2) {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StudentNotifications()),
+          MaterialPageRoute(builder: (context) => CounselorAppointment()),
         );
       } else if (index == 3) {
         Navigator.of(context).push(

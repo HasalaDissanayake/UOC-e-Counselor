@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uoc_counselor/screens/counselorList.dart';
+import 'package:uoc_counselor/screens/studentBook.dart';
 import 'package:uoc_counselor/screens/studentmessages.dart';
 import 'package:uoc_counselor/screens/studentnotifications.dart';
 import 'package:uoc_counselor/screens/profileStudent.dart';
@@ -125,7 +126,7 @@ class _CounselorViewState extends State<CounselorView> {
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) {
-                            return StudentHome();
+                            return BookCounselor();
                           },
                         ));
                       },

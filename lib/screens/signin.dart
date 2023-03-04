@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:uoc_counselor/screens/counselorHome.dart';
+import 'package:uoc_counselor/screens/signup.dart';
 import 'package:uoc_counselor/screens/studentHome.dart';
 
 class signin  extends StatelessWidget {
@@ -44,16 +45,11 @@ class signin  extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap= (){
-                              print('Link tapped!');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => signup()),
+                              );
                             }
-                      )
-                    //   'SignUp',
-                    // style: TextStyle(
-                    //   fontSize: 16,
-                    //   fontWeight: FontWeight.bold,
-                    //   color: Colors.white,
-                    // ),
-
+                      ),
                   ),
                 ],
 
@@ -92,7 +88,7 @@ class signin  extends StatelessWidget {
                   onPressed: (){
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context){
-                          return CounselorHome();
+                          return StudentHome();
                         }
                     ));
                   },

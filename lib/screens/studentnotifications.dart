@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uoc_counselor/screens/studentAppoinments.dart';
 import 'package:uoc_counselor/screens/studentmessages.dart';
 import 'package:uoc_counselor/screens/profileStudent.dart';
 import 'package:uoc_counselor/screens/studentHome.dart';
@@ -21,7 +22,7 @@ class _StudentNotificationsState extends State<StudentNotifications> {
     'Received Message',
   ];
 
-  int _currentIndex = 2;
+  int _currentIndex = 0;
 
   final List<Widget> _children = [
     StudentHome(),
@@ -34,7 +35,6 @@ class _StudentNotificationsState extends State<StudentNotifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: Text('Notifications'),
         backgroundColor: Colors.deepPurple,
       ) ,
@@ -78,8 +78,8 @@ class _StudentNotificationsState extends State<StudentNotifications> {
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.deepPurple,
-            icon: Icon(Icons.notifications_active),
-            label: 'Notification',
+            icon: Icon(Icons.bookmark_add),
+            label: 'Appointments',
           ),
           BottomNavigationBarItem(
             backgroundColor: Colors.deepPurple,
@@ -94,9 +94,9 @@ class _StudentNotificationsState extends State<StudentNotifications> {
     setState(() {
       _currentIndex = index;
 
-      if (index == 0) {
+      if (index == 2) {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StudentHome()),
+          MaterialPageRoute(builder: (context) => CounselorAppointment()),
         );
       } else if (index == 1) {
         Navigator.of(context).push(

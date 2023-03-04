@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:uoc_counselor/screens/signin.dart';
 
 class signup  extends StatelessWidget {
 
@@ -35,16 +37,23 @@ class signup  extends StatelessWidget {
                               color: Colors.white,
                             ),
                           ),
-                          Text(
-                            'SignIn',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Text.rich(
+                            TextSpan(
+                                text:'Sign-In',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap= (){
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) => signin()),
+                                    );
+                                  }
                             ),
                           ),
                         ],
-
                       ),
                     ),
                     SizedBox(
