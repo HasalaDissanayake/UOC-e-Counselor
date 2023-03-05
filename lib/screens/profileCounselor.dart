@@ -48,7 +48,7 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
         if (data != null) {
           setState(() {
             name = data['name'] ?? "";
-            mobileNo = data['tel'] ?? "";
+            mobileNo = data['mobileNo'] ?? "";
             email = data['email'] ?? "";
             nameController.text = name;
             mobileNoController.text = mobileNo;
@@ -62,7 +62,7 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
   void updateData() {
     usersCollection.doc('RTNNzu1jyZWjhv5m51Ik').update({
       'name': nameController.text,
-      'tel': mobileNoController.text,
+      'mobileNo': mobileNoController.text,
       'email': emailController.text,
     }).then((value) {
       setState(() {
@@ -124,7 +124,6 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
                             controller: mobileNoController,
-
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,

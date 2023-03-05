@@ -42,13 +42,13 @@ class _ProfileStudentState extends State<ProfileStudent> {
   }
 
   void retrieveData() {
-    usersCollection.doc('xsCIXxkxwh2eBc56KX4D').get().then((doc) {
+    usersCollection.doc('6eGq4Ancr8DWLu0DhQ2x').get().then((doc) {
       if (doc.exists) {
         Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
         if (data != null) {
           setState(() {
             name = data['name'] ?? "";
-            mobileNo = data['tel'] ?? "";
+            mobileNo = data['mobileNo'] ?? "";
             email = data['email'] ?? "";
             nameController.text = name;
             mobileNoController.text = mobileNo;
@@ -60,9 +60,9 @@ class _ProfileStudentState extends State<ProfileStudent> {
   }
 
   void updateData() {
-    usersCollection.doc('xsCIXxkxwh2eBc56KX4D').update({
+    usersCollection.doc('6eGq4Ancr8DWLu0DhQ2x').update({
       'name': nameController.text,
-      'tel': mobileNoController.text,
+      'mobileNo': mobileNoController.text,
       'email': emailController.text,
     }).then((value) {
       setState(() {

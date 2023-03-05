@@ -48,21 +48,9 @@ class _signinState extends State<signin> {
             print(hashedPassword);
 
             if (hashedPassword == password) {
-              // print('true');
-              // Redirect user to appropriate screen
-              String userType = userData['index'];
-              print(userType);
-              if (userType.startsWith('U')) {
-                // print('hi');
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => StudentHome()),
-                );
-              } else {
-                print('hola');
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => CounselorHome()),
                 );
-              }
             }
           }
         }
@@ -75,18 +63,9 @@ class _signinState extends State<signin> {
             print(hashedPassword);
 
             if (hashedPassword == password) {
-              // Redirect user to appropriate screen
-              String userType = userData['index'];
-              print(userType);
-              if (userType.startsWith('S')) {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => StudentHome()),
                 );
-              } else {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CounselorHome()),
-                );
-              }
             }
           }
         }
