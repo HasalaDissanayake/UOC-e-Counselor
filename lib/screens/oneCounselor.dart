@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:uoc_counselor/screens/counselorList.dart';
 import 'package:uoc_counselor/screens/studentBook.dart';
 import 'package:uoc_counselor/screens/studentmessages.dart';
 import 'package:uoc_counselor/screens/studentnotifications.dart';
 import 'package:uoc_counselor/screens/profileStudent.dart';
 import 'package:uoc_counselor/screens/studentHome.dart';
 import 'package:uoc_counselor/screens/studentMessageOne.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CounselorView extends StatefulWidget {
   const CounselorView({Key? key}) : super(key: key);
@@ -32,6 +33,40 @@ class _CounselorViewState extends State<CounselorView> {
     StudentNotifications(),
     ProfileStudent(),
   ];
+
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('counselors');
+  String mobileNo = '';
+
+  void initState() {
+    super.initState();
+    retrieveData();
+  }
+
+  void retrieveData() {
+    usersCollection.doc('RTNNzu1jyZWjhv5m51Ik').get().then((doc) {
+      if (doc.exists) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          setState(() {
+            mobileNo = data['tel'] ?? "";
+            print(mobileNo);
+          });
+        }
+      }
+    });
+  }
+
+  void launchMobileDialer() async {
+    final url = 'tel:$mobileNo';
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      print('Launching $url');
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +106,8 @@ class _CounselorViewState extends State<CounselorView> {
                       Container(
                         width: 150.0,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => CounselorList()),
-                            );
+                          onPressed: ()  {
+                            launchMobileDialer();
                           },
                           child: Row(
                             children: [

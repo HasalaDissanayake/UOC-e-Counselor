@@ -3,6 +3,7 @@ import 'package:uoc_counselor/screens/counselorHome.dart';
 import 'package:uoc_counselor/screens/counselorMessage.dart';
 import 'package:uoc_counselor/screens/counselorNotifications.dart';
 import 'package:uoc_counselor/screens/signin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileCounselor extends StatefulWidget {
   const ProfileCounselor({Key? key}) : super(key: key);
@@ -22,6 +23,58 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
     CounselorNotification(),
     ProfileCounselor(),
   ];
+
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('counselors');
+  String name = '';
+  String mobileNo = '';
+  String email = '';
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  bool isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    retrieveData();
+  }
+
+  void retrieveData() {
+    usersCollection.doc('RTNNzu1jyZWjhv5m51Ik').get().then((doc) {
+      if (doc.exists) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          setState(() {
+            name = data['name'] ?? "";
+            mobileNo = data['tel'] ?? "";
+            email = data['email'] ?? "";
+            nameController.text = name;
+            mobileNoController.text = mobileNo;
+            emailController.text = email;
+          });
+        }
+      }
+    });
+  }
+
+  void updateData() {
+    usersCollection.doc('RTNNzu1jyZWjhv5m51Ik').update({
+      'name': nameController.text,
+      'tel': mobileNoController.text,
+      'email': emailController.text,
+    }).then((value) {
+      setState(() {
+        name = nameController.text;
+        mobileNo = mobileNoController.text;
+        email = emailController.text;
+        isEditing = false;
+      });
+    }).catchError((error) {
+      print("Failed to update data: $error");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +96,8 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                       subtitle: Padding(
                         padding: EdgeInsets.only(top: 10.0,bottom: 40),
                         child: CircleAvatar(
-                          backgroundColor:Colors.red,
                           radius: 50.0,
-
+                          backgroundImage: AssetImage('assets/man.jpg'),
                         ),
                       ),
                     ),
@@ -55,13 +107,11 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value1'),
-
+                            controller: nameController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Name',
                             ),
                           ),
                         ),
@@ -73,13 +123,12 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value2'),
+                            controller: mobileNoController,
 
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Mobile No',
                             ),
                           ),
                         ),
@@ -91,36 +140,17 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value3'),
+                            controller: emailController,
 
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Email',
                             ),
                           ),
                         ),
                       ),
                     ),
-                    ListTile(
-                      subtitle: SizedBox(
-                        width: 300.0,
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value'),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Passweeord',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
                     ListTile(
                       subtitle: Padding(
                         padding: EdgeInsets.only(top: 20.00),
@@ -141,9 +171,7 @@ class _ProfileCounselorState extends State<ProfileCounselor> {
                             SizedBox(
                               width: 100.0,
                               child: ElevatedButton(
-                                onPressed: (){
-
-                                },
+                                onPressed: updateData,
                                 child: Text('Edit'),
                               ),
                             )

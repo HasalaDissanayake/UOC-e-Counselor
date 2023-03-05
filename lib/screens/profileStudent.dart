@@ -3,6 +3,7 @@ import 'package:uoc_counselor/screens/studentAppoinments.dart';
 import 'package:uoc_counselor/screens/studentmessages.dart';
 import 'package:uoc_counselor/screens/signin.dart';
 import 'package:uoc_counselor/screens/studentHome.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileStudent extends StatefulWidget {
   const ProfileStudent({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class ProfileStudent extends StatefulWidget {
 }
 
 class _ProfileStudentState extends State<ProfileStudent> {
-  final _myController = TextEditingController(text: 'Default Value');
+  // final _myController = TextEditingController(text: 'Default Value');
 
   int _currentIndex = 3;
 
@@ -22,6 +23,58 @@ class _ProfileStudentState extends State<ProfileStudent> {
     CounselorAppointment(),
     ProfileStudent(),
   ];
+
+  final CollectionReference usersCollection = FirebaseFirestore.instance.collection('students');
+  String name = '';
+  String mobileNo = '';
+  String email = '';
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  bool isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    retrieveData();
+  }
+
+  void retrieveData() {
+    usersCollection.doc('xsCIXxkxwh2eBc56KX4D').get().then((doc) {
+      if (doc.exists) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          setState(() {
+            name = data['name'] ?? "";
+            mobileNo = data['tel'] ?? "";
+            email = data['email'] ?? "";
+            nameController.text = name;
+            mobileNoController.text = mobileNo;
+            emailController.text = email;
+          });
+        }
+      }
+    });
+  }
+
+  void updateData() {
+    usersCollection.doc('xsCIXxkxwh2eBc56KX4D').update({
+      'name': nameController.text,
+      'tel': mobileNoController.text,
+      'email': emailController.text,
+    }).then((value) {
+      setState(() {
+        name = nameController.text;
+        mobileNo = mobileNoController.text;
+        email = emailController.text;
+        isEditing = false;
+      });
+    }).catchError((error) {
+      print("Failed to update data: $error");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +96,8 @@ class _ProfileStudentState extends State<ProfileStudent> {
                       subtitle: Padding(
                         padding: EdgeInsets.only(top: 10.0,bottom: 40),
                         child: CircleAvatar(
-                          backgroundColor:Colors.red,
                           radius: 50.0,
-
+                          backgroundImage: AssetImage('assets/man.jpg'),
                         ),
                       ),
                     ),
@@ -55,13 +107,11 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value1'),
-
+                            controller: nameController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Name',
                             ),
                           ),
                         ),
@@ -73,13 +123,12 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value2'),
+                            controller: mobileNoController,
 
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Mobile No',
                             ),
                           ),
                         ),
@@ -91,36 +140,17 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         child: Padding(
                           padding: EdgeInsets.all(3.0),
                           child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value3'),
+                            controller: emailController,
 
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Password',
+                              labelText: 'Email',
                             ),
                           ),
                         ),
                       ),
                     ),
-                    ListTile(
-                      subtitle: SizedBox(
-                        width: 300.0,
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: TextFormField(
-                            controller: TextEditingController(text: 'Default Value'),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Enter Password',
-                              labelText: 'Passweeord',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
                     ListTile(
                       subtitle: Padding(
                         padding: EdgeInsets.only(top: 20.00),
@@ -141,9 +171,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                             SizedBox(
                               width: 100.0,
                               child: ElevatedButton(
-                                onPressed: (){
-
-                                },
+                                onPressed: updateData,
                                 child: Text('Edit'),
                               ),
                             )
@@ -154,7 +182,6 @@ class _ProfileStudentState extends State<ProfileStudent> {
                   ],
                 ),
               ]
-
           ),
         ),
       ),

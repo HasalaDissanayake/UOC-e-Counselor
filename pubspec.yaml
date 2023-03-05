@@ -38,6 +38,8 @@ dependencies:
 
   # Firebase DB
   cloud_firestore: ^4.4.3
+  url_launcher: ^6.1.5
+  email_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:

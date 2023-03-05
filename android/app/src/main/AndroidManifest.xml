@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.uocCounselor.uoc_counselor">
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+    </queries>
    <application
         android:label="uoc_counselor"
         android:name="${applicationName}"

@@ -1,9 +1,56 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:uoc_counselor/screens/signin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class signup  extends StatelessWidget {
+class signup extends StatefulWidget {
+  const signup({Key? key}) : super(key: key);
 
+  @override
+  State<signup> createState() => _signupState();
+}
+
+class _signupState extends State<signup> {
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController indexController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
+  TextEditingController confirmPwController = TextEditingController();
+
+  void registerUser() {
+    String name = nameController.text;
+    String email = emailController.text;
+    String mobileNo = mobileNoController.text;
+    String index = indexController.text;
+    String password = pwController.text;
+    String vrypassword = confirmPwController.text;
+
+    if (email.isNotEmpty && EmailValidator.validate(email) && name.isNotEmpty &&
+        mobileNo.isNotEmpty && index.isNotEmpty && password.isNotEmpty &&
+        vrypassword.isNotEmpty) {
+      if ((password.length >= 6) && (vrypassword == password)){
+
+        String collectionName = index.startsWith('S') ? 'counselors' : 'students';
+        DocumentReference newUser = FirebaseFirestore.instance.collection(
+            collectionName).doc();
+
+      newUser.set({
+        'name': name,
+        'email': email,
+        'mobileNo': mobileNo,
+        'index': index,
+        'password': password
+      });
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => signin()),
+        );
+    }
+  }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +108,7 @@ class signup  extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
+                          controller: emailController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -75,6 +123,7 @@ class signup  extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
+                          controller: nameController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -89,6 +138,7 @@ class signup  extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
+                          controller: mobileNoController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -103,11 +153,12 @@ class signup  extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
+                          controller: indexController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Enter Index No',
-                            labelText: 'Index No',
+                            hintText: 'Enter ID No',
+                            labelText: 'ID No',
                           ),
                         ),
                       ),
@@ -118,6 +169,7 @@ class signup  extends StatelessWidget {
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
                           obscureText: true,
+                          controller: pwController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -133,6 +185,7 @@ class signup  extends StatelessWidget {
                         padding: EdgeInsets.all(3.0),
                         child: TextFormField(
                           obscureText: true,
+                          controller: confirmPwController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
@@ -147,7 +200,7 @@ class signup  extends StatelessWidget {
                       width: 300.0,
                       child: ElevatedButton(
                         onPressed: (){
-
+                            registerUser();
                         },
                         child: Text('Sign In'),
                       ),
