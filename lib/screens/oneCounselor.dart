@@ -48,7 +48,7 @@ class _CounselorViewState extends State<CounselorView> {
         Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
         if (data != null) {
           setState(() {
-            mobileNo = data['tel'] ?? "";
+            mobileNo = data['mobileNo'] ?? "";
             print(mobileNo);
           });
         }

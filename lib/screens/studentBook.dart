@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uoc_counselor/screens/studentAppoinments.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookCounselor extends StatefulWidget {
   const BookCounselor({Key? key}) : super(key: key);
@@ -9,6 +10,27 @@ class BookCounselor extends StatefulWidget {
 }
 
 class _BookCounselorState extends State<BookCounselor> {
+
+  TextEditingController timeC = TextEditingController();
+  TextEditingController dateC = TextEditingController();
+
+  void addbooking() {
+    String time = timeC.text;
+    String date = dateC.text;
+
+    DocumentReference newBook = FirebaseFirestore.instance.collection(
+            'bookings').doc();
+
+        newBook.set({
+          'date': date,
+          'time': time,
+        });
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => CounselorAppointment()),
+        );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +51,7 @@ class _BookCounselorState extends State<BookCounselor> {
                     child: Padding(
                       padding: EdgeInsets.all(10.0),
                       child: TextFormField(
+                        controller: dateC,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -45,6 +68,7 @@ class _BookCounselorState extends State<BookCounselor> {
                     child: Padding(
                       padding: EdgeInsets.all(5.0),
                       child: TextFormField(
+                        controller: timeC,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -62,9 +86,7 @@ class _BookCounselorState extends State<BookCounselor> {
                       width: 100.0,
                       child: ElevatedButton(
                         onPressed: (){
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CounselorAppointment()),
-                          );
+                          addbooking();
                         },
                         child: Text('Book'),
                       ),
